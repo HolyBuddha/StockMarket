@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 CompanyInfo companyModelFromJson(String str) => CompanyInfo.fromJson(json.decode(str));

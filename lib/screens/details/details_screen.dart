@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:tn_group_test/screens/home/home_repository/home_models.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final CompanyInfo companyInfo;
+  final CompanyInfo _companyInfo;
 
   const DetailsScreen({
     Key? key,
-    required this.companyInfo,
-  }) : super(key: key);
+    required CompanyInfo companyInfo,
+  }) : _companyInfo = companyInfo, super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(companyInfo.name ?? 'No data'),
+        title: Text(_companyInfo.name ?? 'No data'),
         centerTitle: true,
       ),
       body: Center(
@@ -23,7 +23,7 @@ class DetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 15),
-            Image.asset('assets/${companyInfo.symbol}.png',
+            Image.asset('assets/${_companyInfo.symbol}.png',
                 width: 100, height: 100),
             Expanded(
               child: Padding(
@@ -31,7 +31,7 @@ class DetailsScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Text(
-                    companyInfo.description ?? 'No data',
+                    _companyInfo.description ?? 'No data',
                     textAlign: TextAlign.justify,
                     textScaleFactor: 1,
                   ),
@@ -39,9 +39,9 @@ class DetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            Text('Symbol: ${companyInfo.symbol ?? 'No data'}'),
-            Text('Country: ${companyInfo.country ?? 'No data'}'),
-            Text('Market Capitalization: ${(companyInfo.marketCapitalization?.toStringAsFixed(0))  ?? 'No data'}'),
+            Text('Symbol: ${_companyInfo.symbol ?? 'No data'}'),
+            Text('Country: ${_companyInfo.country ?? 'No data'}'),
+            Text('Market Capitalization: ${(_companyInfo.marketCapitalization?.toStringAsFixed(0))  ?? 'No data'}'),
             const SizedBox(height: 15),
           ],
         ),

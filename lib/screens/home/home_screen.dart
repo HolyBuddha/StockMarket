@@ -14,11 +14,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State {
-  
-  int touchedIndex = -1;
-  List<CompanyInfo> companies = [];
-  List<String> companiesSymbols = ['AAPL', 'AMZN', 'GOOG', 'MSFT', 'NFLX'];
-  List<Color> sectionColors = [
+  int _touchedIndex = -1;
+  List<CompanyInfo> _companies = [];
+  final List<String> _companiesSymbols = ['AAPL', 'AMZN', 'GOOG', 'MSFT', 'NFLX'];
+  final List<Color> _sectionColors = [
     AppColors.colorRed,
     AppColors.colorYellow,
     AppColors.colorPurple,
@@ -50,7 +49,7 @@ class _HomeScreenState extends State {
             "Total capitalization",
             style: TextStyle(fontSize: 30),
           ),
-          Text('${totalCapitalization(companies)} billions'),
+          Text('${totalCapitalization(_companies)} billions'),
           const SizedBox(
             height: 30,
           ),
@@ -64,12 +63,12 @@ class _HomeScreenState extends State {
                       if (!event.isInterestedForInteractions ||
                           pieTouchResponse == null ||
                           pieTouchResponse.touchedSection == null) {
-                        touchedIndex = -1;
+                        _touchedIndex = -1;
                         return;
                       }
-                      touchedIndex =
+                      _touchedIndex =
                           pieTouchResponse.touchedSection!.touchedSectionIndex;
-                      openDetailsScreen(touchedIndex);
+                      openDetailsScreen(_touchedIndex);
                     });
                   },
                 ),
@@ -78,14 +77,14 @@ class _HomeScreenState extends State {
                 ),
                 sectionsSpace: 5,
                 centerSpaceRadius: 50,
-                sections: showingSections(companies),
+                sections: showingSections(_companies),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(30.0),
             child: Column(
-              children: showingIndicators(companies),
+              children: showingIndicators(_companies),
             ),
           ),
           ElevatedButton(
@@ -107,7 +106,7 @@ class _HomeScreenState extends State {
     if (companies.isNotEmpty) {
       for (int i = 0; i < companies.length; i++) {
         var section = Indicator(
-          color: sectionColors[i],
+          color: _sectionColors[i],
           text: companies[i].name ?? "No data",
           isSquare: false,
           size: 10,
@@ -123,7 +122,7 @@ class _HomeScreenState extends State {
 
     for (int i = 0; i < companies.length; i++) {
       var section = PieChartSectionData(
-        color: sectionColors[i],
+        color: _sectionColors[i],
         value: companies[i].marketCapitalization,
         title:
             ((companies[i].marketCapitalization ?? Capacity.bil) / Capacity.bil)
@@ -140,7 +139,7 @@ class _HomeScreenState extends State {
     }
     return result;
   }
-
+  
   String totalCapitalization(List<CompanyInfo> companies) {
     var result = 0;
 
@@ -152,7 +151,7 @@ class _HomeScreenState extends State {
 
   fetchData() async {
     try {
-      companies = await HomeRepository().getAllCompaniesInfo(companiesSymbols);
+      _companies = await HomeRepository().getAllCompaniesInfo(_companiesSymbols);
       homeState();
     } catch (error) {
       showDialog(
@@ -181,7 +180,7 @@ class _HomeScreenState extends State {
           context,
           MaterialPageRoute(
               builder: (context) => DetailsScreen(
-                    companyInfo: companies[i],
+                    companyInfo: _companies[i],
                   )));
     }
   }
